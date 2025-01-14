@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wall Quality Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .preview {
+            margin: 20px 0;
+        }
+        .preview img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .message.success {
+            color: green;
+        }
+        .message.error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wall Quality Prediction</h1>
+        <form id="uploadForm">
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <div class="preview" id="imagePreview">
+                <p>No image selected</p>
+            </div>
+            <button type="submit">Upload and Predict</button>
+        </form>
+        <div id="output" class="message"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('image');
+        const previewDiv = document.getElementById('imagePreview');
+        const outputDiv = document.getElementById('output');
+
+        // Show image preview when a file is selected
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewDiv.innerHTML = `<img src="${e.target.result}" alt="Selected Image">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewDiv.innerHTML = `<p>No image selected</p>`;
+            }
+            outputDiv.textContent = ""; // Clear previous message
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            // Ensure a file is selected
+            if (!fileInput.files[0]) {
+                outputDiv.textContent = "Please select an image.";
+                outputDiv.className = "message error";
+                return;
+            }
+
+            outputDiv.textContent = "Processing your image..."; // Show processing message
+            outputDiv.className = "message"; // Reset styling
+
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                // Display the server's response
+                outputDiv.textContent = result.message;
+                outputDiv.classList.add(result.message.includes("good") ? "success" : "error");
+            } catch (error) {
+                console.error(error);
+                outputDiv.textContent = "An error occurred while processing the image.";
+                outputDiv.classList.add("error");
+            }
+        });
+    </script>
+</body>
+</html>
