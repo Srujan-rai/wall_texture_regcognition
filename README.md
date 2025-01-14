@@ -173,7 +173,7 @@ pip install -r requirements.txt
 1. Clone the repository to your local machine:
 
 ```bash
-git clone [<repository_url>](https://github.com/Srujan-rai/wall_texture_regcognition.git)
+git clone https://github.com/Srujan-rai/wall_texture_regcognition.git
 cd wall_texture_regcognition
 ```
 
