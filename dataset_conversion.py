@@ -3,16 +3,11 @@ import numpy as np
 import os
 
 def enhance_texture(image_path, output_path):
-    """
-    Enhance the texture of a wall surface in an image while managing light intensity variations.
-    """
-    # Load the image
+    
     image = cv2.imread(image_path)
     
-    # Convert to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     
-    # Apply CLAHE (Contrast Limited Adaptive Histogram Equalization)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     equalized_image = clahe.apply(gray_image)
     
@@ -37,7 +32,7 @@ def process_dataset(input_dir, output_dir):
         os.makedirs(target_dir, exist_ok=True)
         
         for file in files:
-            if file.lower().endswith(('.png', '.jpg', '.jpeg')):  # Process only image files
+            if file.lower().endswith(('.png', '.jpg', '.jpeg')): 
                 input_path = os.path.join(root, file)
                 output_path = os.path.join(target_dir, file)
                 
@@ -47,5 +42,4 @@ def process_dataset(input_dir, output_dir):
 input_dataset_dir = "fyp robot.v3i.yolov8" 
 output_dataset_dir = "fyp_robot_transformed" 
 
-# Process the dataset
 process_dataset(input_dataset_dir, output_dataset_dir)
