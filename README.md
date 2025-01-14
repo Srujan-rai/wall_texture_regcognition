@@ -1,5 +1,5 @@
 
-```markdown
+
 # Wall Quality Classification and Enhancement
 
 This project is focused on wall finish quality classification using image processing and machine learning. It enhances the texture of input images and classifies them as either "Good" or "Bad" based on certain metrics. The enhancement process uses techniques like CLAHE, bilateral filtering, sharpening, and edge detection. Additionally, the project exposes an API that allows users to upload images, enhance their texture, and classify them using a pre-trained deep learning model.
