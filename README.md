@@ -113,6 +113,25 @@ if (metrics["edge_count"] < thresholds["edge_count"] and
 
 ---
 
+##Model Training (CNN)
+###Model Architecture:
+A convolutional neural network (CNN) is defined with the following layers:
+
+3 convolutional layers with increasing filters (32, 64, 64).
+MaxPooling layers for down-sampling.
+A fully connected (dense) layer with 64 units.
+A final output layer with a sigmoid activation for binary classification (Good/Bad).
+Data Augmentation:
+Data augmentation is applied to the training images using ImageDataGenerator to generate new variations of the training dataset. This helps the model generalize better during training.
+
+Training:
+The model is trained using the model.fit() function with 10 epochs and a validation split to monitor the model's performance during training.
+
+**Saving the Model**:
+After training, the model is saved to a file (wall_quality_model.h5) using the model.save() method.
+
+
+
 ## API Overview (Implemented in `api.py`)
 
 The Flask application provides a RESTful API that allows users to upload images for texture enhancement and classification.
